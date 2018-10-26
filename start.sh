@@ -2,6 +2,12 @@
 default="--conf /caddy/Caddyfile --log stdout -agree"
 args=${RUN_ARGS:-$default}
 
+if [ ! -f /caddy/.installed ]; then
+  echo "Installing Caddy"
+  curl https://getcaddy.com | bash -s personal ${PLUGINS} &&
+  touch /caddy/.installed
+fi
+
 if [ ! -f /caddy/Caddyfile ]; then
   echo "Creating default Caddyfile..."
   cp /opt/assets/Caddyfile /caddy/Caddyfile
